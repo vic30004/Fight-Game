@@ -53,3 +53,26 @@ p{
     
 }
 
+.display {
+    display:none;
+}
+
+.flex{
+    display: flex; 
+    flex-flow: column wrap;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: rgba(45, 52, 54,.4);
+    width: 15%;
+    margin: 0 10px;
+}
+
+#enemy-attack{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    margin: 0 auto;
+}
