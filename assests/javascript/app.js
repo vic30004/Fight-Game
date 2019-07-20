@@ -12,7 +12,7 @@ let bands = [
         imgSrc: "http://artist2.cdn107.com/a95/a95aade3e0a87d7bca89b86855aa9395_lg.png",
         hp: 168,
         attack: 9,
-        counter: 17,
+        counter: 25,
         attackIncrease: 5
     },
     {
@@ -20,9 +20,9 @@ let bands = [
         name: "Nirvana",
         imgSrc: "https://tonedeaf.thebrag.com/wp-content/uploads/2017/08/nirvana.jpg",
         hp: 187,
-        attack: 6,
+        attack: 19,
         counter: 15,
-        attackIncrease: 20
+        attackIncrease: 10
     },
     {
         id: "rhcp",
@@ -30,7 +30,7 @@ let bands = [
         imgSrc: "https://junkee.com/wp-content/uploads/2019/02/330e12cfdf1ece78f3a80437944efea81.jpg",
         hp: 183,
         attack: 8,
-        counter: 15,
+        counter: 30,
         attackIncrease: 15
     },
     {
@@ -45,7 +45,7 @@ let bands = [
 ];
 
 function createUnselectedBands() {
-    //loop through array to pick each band and append them to div
+    //loop through array to pick each band 
     for (let i = 0; i < bands.length; i++) {
         let band = bands[i];
         appendCharacter(band, "unselectedBands");
@@ -83,7 +83,7 @@ $("#unselectedBands").on("click", ".pick-band", function () {
 //this will move the selected enemy to the defender div
 $("#enemies").on("click", ".pick-band", function () {
     //to make sure there is one defender at a time 
-    if(defender){
+    if (defender) {
         return;
     }
     let bandElement = $(this)[0];
@@ -104,15 +104,16 @@ $("#enemies").on("click", ".pick-band", function () {
     enemies = tempEnemies;
 });
 
-$("#attack").on("click", function() {
+// this will activate the attack button 
+$("#attack").on("click", function () {
 
-    let characterAttack= selectedCharacter.attack + (numOfAttacks * selectedCharacter.attackIncrease);
+    let characterAttack = selectedCharacter.attack + (numOfAttacks * selectedCharacter.attackIncrease);
     numOfAttacks++;
-    let enemyAttack= defender.counter;
-    
-    selectedCharacter.hp -= enemyAttack; 
+    let enemyAttack = defender.counter;
+
+    selectedCharacter.hp -= enemyAttack;
     defender.hp -= characterAttack;
-   let string= selectedCharacter.name+ " hit for "+ characterAttack + " and " + defender.name + " countered with " + enemyAttack;
+    let string = selectedCharacter.name + " hit for " + characterAttack + " and " + defender.name + " countered with " + enemyAttack;
     $("#update").html(string)
 
 
@@ -122,69 +123,61 @@ $("#attack").on("click", function() {
     appendCharacter(selectedCharacter, "selectedCharacter");
     appendCharacter(defender, "defender");
 
-    if(defender.hp > 0){
-        return}
-
-        else{
-    defender.hp= 0;
-    $("#defender").empty();
-    appendCharacter(defender, "defender");
-    $("#attack").css("display","none")
-    $("#update").html(string + " Please pick a new enemy")
-        
-
-    if(selectedCharacter.hp>0){
-        
-    }
-    else {
-        selectedCharacter.hp=0;
-        $("#selectedCharacter").empty();
-        appendCharacter(selectedCharacter, "selectedCharacter");
-    }
-    
-    }
-
+    enemyLost();
+    heroLost();
 
 });
 
+//what happens when enemy hp is 0
+function enemyLost(){
+    if (defender.hp > 0) {
+        return
+    }
 
+    else {
+        defender.hp = 0;
+        let characterAttack = selectedCharacter.attack + (numOfAttacks * selectedCharacter.attackIncrease);
+        let enemyAttack = defender.counter;
+        $("#defender").empty();
+        appendCharacter(defender, "defender");
+        
+        $("#defender").fadeOut(400, function () {
+            $("#attack").css("display", "none")
+            let string = selectedCharacter.name + " dealt " + characterAttack + " and " + defender.name + " countered with " + enemyAttack;
 
-// pickCharacter();
-// enemyTeam();
+            $("#update").html(string + " Please pick a new enemy")
 
+            $(this).remove();
+        });
+    
+}
+}
+//what happens when enemy hp is 0
+function heroLost(){
+    if (selectedCharacter.hp > 0) {
 
+    }
+    else {
+        selectedCharacter.hp = 0;
+        $("#selectedCharacter").empty();
+        appendCharacter(selectedCharacter, "selectedCharacter");
+        $("#attack").css("display", "none")
+        $("#update").html("You lost! Click restart to play again!")
+        gameOver=true;
+    }
+}
 
+$(".reset").on("click", function(){
 
-// function pickCharacter() {
+    restart()
+})
 
-//     }
+function restart(){
+    $("#unselectedBands").empty();  
+    
+    bands.reset();
+}
 
-
-
-// function enemyTeam() {
-//         //if a villian is clicked 
-//         $(".enemy-attack").on("click", function () {
-//             // move villian to fight section
-//             // if there is a band in fight section stop this code
-//             // band selected will retrieve info from object (maybe create a function that does this and add it here)
-//             // if fight section is empty reactivate this code 
-//             //       $(this).attr("class", "fight-section");
-
-//             //     let detachBand= $(this).detach() ;
-//             //   detachBand.appendTo("#fight")
-//         })
-//     }
-
-
-// function Gameover() {
-//         // if hero hp = 0 game over;
-//         //if villian hp = 0, enemyTeam() will run again
-//         //if all villians lose game is over
-//         // show reset button
-
-//         //hero attacks with attach
-//         // villian attacks with counter
-//     }
 
 
 
