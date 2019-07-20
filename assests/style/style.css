@@ -4,8 +4,9 @@
 }
 body,html{
     height: 100%;
-    color: rgba(243, 241, 239, .77);
-    background: url("/assests/pictures/sam-moghadam-DvFuehUNPD8-unsplash.jpg") no-repeat center center fixed; 
+    color: black;
+   /* color: rgba(243, 241, 239, .77);*/
+    /*background: url("/assests/pictures/sam-moghadam-DvFuehUNPD8-unsplash.jpg") no-repeat center center fixed; */
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -13,6 +14,7 @@ body,html{
   padding: 0 20px;
   margin: 0 auto;
   font-family: 'Rubik Mono One', cursive;
+  overflow: auto;
  
 }
 
@@ -47,6 +49,11 @@ body,html{
     margin: 0 10px;
 }
 
+.pick-band img {
+    width: 200px;
+    height: 200px;
+}
+
 p{
     text-align: center;
     font-size: 18px;
@@ -69,10 +76,35 @@ p{
     margin: 0 10px;
 }
 
-#enemy-attack{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.enemy-attack{
+    display: flex; 
+    flex-flow: column wrap;
     align-content: center;
-    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: rgba(45, 52, 54,.4);
+    width: 15%;
+    margin: 0 10px;
+}
+
+.fight-section{
+    display: flex; 
+    flex-flow: column wrap;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: rgba(45, 52, 54,.4);
+    width: 15%;
+    margin: 0 10px;
+}
+
+#selectedCharacter{
+    display:flex;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+    margin: 0px auto;
+    overflow: auto;
 }
