@@ -11,7 +11,7 @@ let bands = [
         name: "Led Zepplin",
         imgSrc: "http://artist2.cdn107.com/a95/a95aade3e0a87d7bca89b86855aa9395_lg.png",
         hp: 168,
-        attack: 5,
+        attack: 9,
         counter: 17,
         attackIncrease: 5
     },
@@ -20,9 +20,9 @@ let bands = [
         name: "Nirvana",
         imgSrc: "https://tonedeaf.thebrag.com/wp-content/uploads/2017/08/nirvana.jpg",
         hp: 187,
-        attack: 10,
-        counter: 8,
-        attackIncrease: 10
+        attack: 6,
+        counter: 15,
+        attackIncrease: 20
     },
     {
         id: "rhcp",
@@ -38,19 +38,20 @@ let bands = [
         name: "Weezer",
         imgSrc: "https://beardedgentlemenmusic.com/wp-content/uploads/2016/04/Weezer-are-dorks.jpg",
         hp: 192,
-        attack: 11,
-        counter: 11,
+        attack: 13,
+        counter: 23,
         attackIncrease: 11
     }
 ];
 
 function createUnselectedBands() {
+    //loop through array to pick each band and append them to div
     for (let i = 0; i < bands.length; i++) {
         let band = bands[i];
         appendCharacter(band, "unselectedBands");
     }
 }
-
+// this funtion will create the elements that will go into the div
 function appendCharacter(band, parentId) {
     let bandElement = "<div class='pick-band' id='" + band.id + "'>";
     bandElement += "<p>" + band.name + "</p>";
@@ -61,7 +62,7 @@ function appendCharacter(band, parentId) {
 }
 
 createUnselectedBands();
-
+//This will save the selected band to the original div and move the rest to the enemies div
 $("#unselectedBands").on("click", ".pick-band", function () {
     let bandElement = $(this)[0];
     let bandId = bandElement.id;
@@ -79,7 +80,9 @@ $("#unselectedBands").on("click", ".pick-band", function () {
     $("#unselectedBands").empty();
 });
 
+//this will move the selected enemy to the defender div
 $("#enemies").on("click", ".pick-band", function () {
+    //to make sure there is one defender at a time 
     if(defender){
         return;
     }
@@ -109,12 +112,39 @@ $("#attack").on("click", function() {
     
     selectedCharacter.hp -= enemyAttack; 
     defender.hp -= characterAttack;
+   let string= selectedCharacter.name+ " hit for "+ characterAttack + " and " + defender.name + " countered with " + enemyAttack;
+    $("#update").html(string)
+
 
     console.log(selectedCharacter, defender);
     $("#selectedCharacter").empty();
     $("#defender").empty();
     appendCharacter(selectedCharacter, "selectedCharacter");
     appendCharacter(defender, "defender");
+
+    if(defender.hp > 0){
+        return}
+
+        else{
+    defender.hp= 0;
+    $("#defender").empty();
+    appendCharacter(defender, "defender");
+    $("#attack").css("display","none")
+    $("#update").html(string + " Please pick a new enemy")
+        
+
+    if(selectedCharacter.hp>0){
+        
+    }
+    else {
+        selectedCharacter.hp=0;
+        $("#selectedCharacter").empty();
+        appendCharacter(selectedCharacter, "selectedCharacter");
+    }
+    
+    }
+
+
 });
 
 
