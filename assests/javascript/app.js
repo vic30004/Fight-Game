@@ -5,7 +5,7 @@ let numOfAttacks = 0;
 let selectedCharacter = null;
 let enemies = [];
 let defender = null;
-let bands = [
+const allBands = [
     {
         id: "lz",
         name: "Led Zepplin",
@@ -43,15 +43,16 @@ let bands = [
         attackIncrease: 11
     }
 ];
+let bands = $.extend(true, [], allBands); //deep copy
 
 function createUnselectedBands() {
-    //loop through array to pick each band 
+    //loop through array to append each band 
     for (let i = 0; i < bands.length; i++) {
         let band = bands[i];
         appendCharacter(band, "unselectedBands");
     }
 }
-// this funtion will create the elements that will go into the div
+// this funtion append a character to a specific div
 function appendCharacter(band, parentId) {
     let bandElement = "<div class='pick-band' id='" + band.id + "'>";
     bandElement += "<p>" + band.name + "</p>";
@@ -62,6 +63,7 @@ function appendCharacter(band, parentId) {
 }
 
 createUnselectedBands();
+
 //This will save the selected band to the original div and move the rest to the enemies div
 $("#unselectedBands").on("click", ".pick-band", function () {
     let bandElement = $(this)[0];
@@ -106,78 +108,70 @@ $("#enemies").on("click", ".pick-band", function () {
 
 // this will activate the attack button 
 $("#attack").on("click", function () {
-
+    if(!selectedCharacter || !defender || selectedCharacter.hp === 0 || defender.hp === 0){
+        return;
+    }
     let characterAttack = selectedCharacter.attack + (numOfAttacks * selectedCharacter.attackIncrease);
     numOfAttacks++;
     let enemyAttack = defender.counter;
 
     selectedCharacter.hp -= enemyAttack;
     defender.hp -= characterAttack;
-    let string = selectedCharacter.name + " hit for " + characterAttack + " and " + defender.name + " countered with " + enemyAttack;
-    $("#update").html(string)
+    let str = selectedCharacter.name + " dealt " + characterAttack + " damage and " + defender.name + " countered with " + enemyAttack;
+    $("#update").text(str);
 
-
-    console.log(selectedCharacter, defender);
-    $("#selectedCharacter").empty();
-    $("#defender").empty();
-    appendCharacter(selectedCharacter, "selectedCharacter");
-    appendCharacter(defender, "defender");
-
-    enemyLost();
-    heroLost();
-
+    updateGameState();
 });
 
-//what happens when enemy hp is 0
-function enemyLost(){
-    if (defender.hp > 0) {
-        return
-    }
-
-    else {
-        defender.hp = 0;
-        let characterAttack = selectedCharacter.attack + (numOfAttacks * selectedCharacter.attackIncrease);
-        let enemyAttack = defender.counter;
+function updateGameState() {
+    if (selectedCharacter.hp <= 0 && defender.hp <= 0) { //this is a tie
+        $("#update").text("Its a tie!");
+        $(".reset").removeClass("no-display");
+        $("#defender").empty();
+        defender.hp=0;
+        selectedCharacter.hp = 0;
+        appendCharacter(defender, "defender");
+    } else if (selectedCharacter.hp <= 0) { //hero lost
+        selectedCharacter.hp = 0;
+        gameOver = true;
         $("#defender").empty();
         appendCharacter(defender, "defender");
-        
-        $("#defender").fadeOut(400, function () {
-            $("#attack").css("display", "none")
-            let string = selectedCharacter.name + " dealt " + characterAttack + " and " + defender.name + " countered with " + enemyAttack;
-
-            $("#update").html(string + " Please pick a new enemy")
-
-            $(this).remove();
-        });
-    
-}
-}
-//what happens when enemy hp is 0
-function heroLost(){
-    if (selectedCharacter.hp > 0) {
-
+        $("#attack").css("display", "none");
+        $("#update").text("You lost! Click restart to play again!");
+        $(".reset").removeClass("no-display");
+    } else if (defender.hp <= 0) { //enemy lost
+        $("#defender").empty();
+        defender = null;
+        if (enemies.length === 0) {
+            $("#update").text(selectedCharacter.name + " are the winners!");
+            $(".reset").removeClass("no-display");
+        }
+    } else { //both take damage
+        $("#defender").empty();
+        appendCharacter(defender, "defender");
     }
-    else {
-        selectedCharacter.hp = 0;
-        $("#selectedCharacter").empty();
-        appendCharacter(selectedCharacter, "selectedCharacter");
-        $("#attack").css("display", "none")
-        $("#update").html("You lost! Click restart to play again!")
-        gameOver=true;
-    }
+
+    $("#selectedCharacter").empty();
+    appendCharacter(selectedCharacter, "selectedCharacter");
 }
 
-$(".reset").on("click", function(){
+$(".reset").on("click", function () {
+    restart();
+});
 
-    restart()
-})
-
-function restart(){
-    $("#unselectedBands").empty();  
-    
-    bands.reset();
+function restart() {
+    $("#unselectedBands").empty();
+    gameOver = false;
+    numOfAttacks = 0;
+    selectedCharacter = null;
+    enemies = [];
+    defender = null;
+    $("#attack").css("display","flex");
+    $(".reset").addClass("no-display");
+    bands =  $.extend(true, [], allBands);
+    $("#enemies").empty();
+    $("#selectedCharacter").empty();
+    $("#defender").empty();
+    $("#update").empty();
+    createUnselectedBands();
 }
-
-
-
-

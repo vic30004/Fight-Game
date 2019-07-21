@@ -4,9 +4,9 @@
 }
 body,html{
     height: 100%;
-    color: black;
-   /* color: rgba(243, 241, 239, .77);*/
-    /*background: url("/assests/pictures/sam-moghadam-DvFuehUNPD8-unsplash.jpg") no-repeat center center fixed; */
+    
+   color: #FFFFFF;
+    background: url("/assests/pictures/karina-carvalho-6CTgu2lP_c0-unsplash.jpg") no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -34,7 +34,7 @@ body,html{
     display:flex;
     justify-content: center;
     align-content: center;
-    margin: 0px auto;
+    margin: 0 auto;
 }
 
 .pick-band {
@@ -56,55 +56,37 @@ body,html{
 
 p{
     text-align: center;
-    font-size: 18px;
+    font-size: 22px;
     
+}
+
+h2{
+    text-align: center;
 }
 
 .display {
     display:none;
 }
 
-.flex{
-    display: flex; 
-    flex-flow: column wrap;
-    align-content: center;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    background: rgba(45, 52, 54,.4);
-    width: 15%;
-    margin: 0 10px;
-}
-
-.enemy-attack{
-    display: flex; 
-    flex-flow: column wrap;
-    align-content: center;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    background: rgba(45, 52, 54,.4);
-    width: 15%;
-    margin: 0 10px;
-}
-
-.fight-section{
-    display: flex; 
-    flex-flow: column wrap;
-    align-content: center;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    background: rgba(45, 52, 54,.4);
-    width: 15%;
-    margin: 0 10px;
-}
 
 #selectedCharacter{
     display:flex;
     justify-content: center;
     align-content: center;
     width: 100%;
-    margin: 0px auto;
+    margin: 0 auto;
     overflow: auto;
+}
+
+button{
+    background: #555555;
+    color: whitesmoke;
+    font-size: 20px;
+    border-radius: 8px;
+    font-family: 'Rubik Mono One', cursive;
+    margin: 20px auto;
+}
+
+.no-display{
+    display: none;
 }
